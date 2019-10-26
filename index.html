@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <script type="text/javascript" src="jquery-3.4.1.min.js"></script>
+    </head>
+    <body>
+        <script type="text/javascript">
+
+            $(function(){
+
+            if (typeof(Worker) === 'undefined') {
+                alert("Oops, your browser doesn't support HTML5 Web Worker.")
+            }
+
+            
+
+            $.getJSON('sample.json', function(data){
+                var worker = new Worker("json-log-worker.js");
+                worker.onmessage = function(e) {
+                    afterWorkerFinish(e.data);
+                };
+                worker.postMessage(data);
+            });
+
+
+            function afterWorkerFinish(data) {
+                console.log('Worker finished processing, with result: ', data);
+            }
+            });
+        </script>
+    </body>
+</html>
